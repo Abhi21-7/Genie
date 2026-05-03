@@ -6,16 +6,15 @@
       "destination": "/api/index.js"
     },
     {
-      "source": "/(.*)",
-      "handle": "filesystem"
+      "source": "/assets/(.*)",
+      "destination": "/client/dist/assets/$1"
     },
     {
-      "source": "/(.*)",
-      "destination": "/client/dist/$1",
-      "continue": true
+      "source": "/vite.svg",
+      "destination": "/client/dist/vite.svg"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!api/).*)",
       "destination": "/client/dist/index.html"
     }
   ]
