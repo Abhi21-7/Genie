@@ -15,14 +15,15 @@ function Dashboard() {
     const handleDeploy = async (id) => {
         try {
             const result = await axios.get(`${serverUrl}/api/website/deploy/${id}`, { withCredentials: true })
-            window.open(`${result.data.url}`, "_blank")
+            const deployUrl = `${window.location.origin}/site/${result.data.slug}`
+            window.open(deployUrl, "_blank")
             setWebsites((prev) =>
-        prev.map((w) =>
-          w._id === id
-            ? { ...w, deployed: true, deployUrl: result.data.url }
-            : w
-        )
-      );
+                prev.map((w) =>
+                    w._id === id
+                        ? { ...w, deployed: true, deployUrl: deployUrl, slug: result.data.slug }
+                        : w
+                )
+            );
         } catch (error) {
             console.log(error)
         }
@@ -46,7 +47,8 @@ function Dashboard() {
     }, [])
 
     const handleCopy = async (site) => {
-        await navigator.clipboard.writeText(site.deployUrl)
+        const url = `${window.location.origin}/site/${site.slug}`
+        await navigator.clipboard.writeText(url)
         setCopiedId(site._id)
         setTimeout(() => setCopiedId(null), 2000)
     }

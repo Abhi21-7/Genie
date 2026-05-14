@@ -50,7 +50,8 @@ function WebsiteEditor() {
     const handleDeploy = async () => {
             try {
                 const result = await axios.get(`${serverUrl}/api/website/deploy/${website._id}`, { withCredentials: true })
-                window.open(`${result.data.url}`, "_blank")
+                setWebsite(prev => ({ ...prev, deployed: true, slug: result.data.slug }))
+                window.open(`${window.location.origin}/site/${result.data.slug}`, "_blank")
                
             } catch (error) {
                 console.log(error)
@@ -159,9 +160,15 @@ function WebsiteEditor() {
                 <div className='h-14 px-4 flex justify-between items-center border-b border-white/10 bg-black/80'>
                     <span className='text-xs text-zinc-400'>Live Preview</span>
                     <div className='flex gap-2'>
-                        {website.deployed ?"": <button className='flex items-center gap-2 px-4 py-1.5 rounded-lg bg-linear-to-r from-indigo-500 to-purple-500 text-sm font-semibold hover:scale-105 transition'
-                        onClick={handleDeploy}
-                        ><Rocket size={14} /> Deploy</button>}
+                        {website.deployed ? (
+                            <button className='flex items-center gap-2 px-4 py-1.5 rounded-lg bg-white/10 text-white text-sm font-semibold hover:bg-white/20 transition'
+                            onClick={() => window.open(`${window.location.origin}/site/${website.slug}`, "_blank")}
+                            ><Rocket size={14} /> View Live</button>
+                        ) : (
+                            <button className='flex items-center gap-2 px-4 py-1.5 rounded-lg bg-linear-to-r from-indigo-500 to-purple-500 text-sm font-semibold hover:scale-105 transition'
+                            onClick={handleDeploy}
+                            ><Rocket size={14} /> Deploy</button>
+                        )}
                        
                         <button className='p-2 lg:hidden' onClick={() => setShowChat(true)}><MessageSquare size={18} /></button>
 

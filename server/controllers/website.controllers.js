@@ -349,7 +349,8 @@ export const deploy=async (req,res)=>{
         await website.save()
 
         return res.status(200).json({
-            url:website.deployUrl
+            url:website.deployUrl,
+            slug:website.slug
         })
 
     } catch (error) {
